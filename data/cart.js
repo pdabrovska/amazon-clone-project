@@ -15,6 +15,8 @@ function saveToStorage(){
 
 export function addToCart(productId){
   let matchingItem;
+  const numSelector = document.querySelector(`.js-quantity-selector-${productId}`);
+  const selectedNumber = numSelector.value;
     
     cart.forEach((cartItem) =>{
       if (productId === cartItem.productId){
@@ -23,11 +25,11 @@ export function addToCart(productId){
     });
 
     if(matchingItem){
-      matchingItem.quantity++;
+      matchingItem.quantity+= Number(selectedNumber);
     } else{
       cart.push({
         productId,
-        quantity: 1
+        quantity: Number(selectedNumber)
       });
     } saveToStorage();
 };
