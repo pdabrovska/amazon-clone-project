@@ -13,6 +13,16 @@ function saveToStorage(){
   localStorage.setItem('cart', JSON.stringify(cart));
 };
 
+export function updateCartQuantity(className){
+  let cartQuantity = 0;
+
+  cart.forEach((cartItem)=>{
+    cartQuantity += cartItem.quantity;
+  });
+
+  document.querySelector(className).innerHTML = cartQuantity;
+};
+
 export function addToCart(productId){
   let matchingItem;
   const numSelector = document.querySelector(`.js-quantity-selector-${productId}`);
@@ -45,4 +55,5 @@ export function removeFromCart(productId){
 
   cart = newCart;
   saveToStorage();
+  updateCartQuantity('.js-products-quantity');
 };
