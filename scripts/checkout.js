@@ -42,7 +42,8 @@ cart.forEach((cartItem)=>{
           data-product-id="${matchingProduct.id}">
             Update
           </span>
-          <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+          <input class="quantity-input js-quantity-input js-quantity-input-${matchingProduct.id}"
+          data-product-id="${matchingProduct.id}">
           <span class="save-quantity-link link-primary js-save-link"
           data-product-id="${matchingProduct.id}"
           >Save</span>
@@ -128,14 +129,13 @@ document.querySelectorAll('.js-save-link')
     link.addEventListener('click', () => {
       const productId = link.dataset.productId;
 
-      document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
-
       const inputElement = document.querySelector(`.js-quantity-input-${productId}`);
       const newQuantity = Number(inputElement.value);
 
       if(newQuantity >= 0 && newQuantity < 1000){
+        document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
         updateQuantity(productId, newQuantity);
-        updateCartQuantity(`.js-quantity-label-${productId}`);
+        document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
         updateCartQuantity('.js-products-quantity');
       } else {
         alert('The quantity must be a number from 0 to 1000');
@@ -143,3 +143,22 @@ document.querySelectorAll('.js-save-link')
       
     });
   });
+
+document.querySelectorAll(".js-quantity-input").forEach((input) =>{
+  input.addEventListener('keydown', (event) =>{
+    const productId = input.dataset.productId;
+    if(event.key === 'Enter'){
+      const inputElement = document.querySelector(`.js-quantity-input-${productId}`);
+      const newQuantity = Number(inputElement.value);
+      
+      if(newQuantity >= 0 && newQuantity < 1000){
+        document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
+        updateQuantity(productId, newQuantity);
+        document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
+        updateCartQuantity('.js-products-quantity');
+      } else {
+        alert('The quantity must be a number from 0 to 1000');
+      }
+    }
+});
+});
